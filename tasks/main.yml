@@ -1,0 +1,22 @@
+---
+
+- name: include OS-specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_distribution }}-{{ ansible_distribution_major_version }}.yaml"
+    - "{{ ansible_distribution }}.yaml"
+    - "{{ ansible_os_family }}.yaml"
+
+- include: install-Debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: install-RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: config.yml
+
+- name: ensure service is started and enabled
+  systemd:
+    name: pgbouncer
+    state: started
+    enabled: yes

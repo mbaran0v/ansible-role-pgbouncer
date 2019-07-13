@@ -1,0 +1,55 @@
+---
+
+- name: create logrotate configuration
+  template:
+    src: logrotate.conf.j2
+    dest: "{{ pgbouncer_logrotate_conf_dir }}/pgbouncer"
+    owner: root
+    group: root
+    mode: 0644
+    force: true
+
+- name: create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ __pgbouncer_user }}"
+    group: "{{ __pgbouncer_group }}"
+    mode: 0755
+  with_items:
+    - "{{ pgbouncer_cfg_dir }}"
+    - "{{ pgbouncer_log_dir }}"
+
+- name: create config file
+  template:
+    src: pgbouncer.ini.j2
+    dest: "{{ pgbouncer_cfg_dir }}/pgbouncer.ini"
+    owner: "{{ __pgbouncer_user }}"
+    group: "{{ __pgbouncer_group }}"
+    mode: 0640
+  notify:
+    - reload pgbouncer
+
+- name: add users to userlist.txt
+  copy:
+    dest: "{{ pgbouncer_auth_file }}"
+    owner: "{{ __pgbouncer_user }}"
+    group: "{{ __pgbouncer_group }}"
+    mode: 0640
+    content: |
+      "stats" "passwordless"
+      {% for user in pgbouncer_users %}
+      "{{ user.name }}" "md5{{ (user.pass + user.name) | hash('md5') }}"
+      {% endfor %}
+  notify:
+    - reload pgbouncer
+
+- name: create hba file
+  template:
+    src: pgbouncer_hba.conf.j2
+    dest: "{{ pgbouncer_auth_hba_file }}"
+    owner: "{{ __pgbouncer_user }}"
+    group: "{{ __pgbouncer_group }}"
+    mode: 0640
+  notify:
+    - reload pgbouncer
