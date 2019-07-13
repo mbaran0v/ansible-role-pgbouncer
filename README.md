@@ -18,23 +18,8 @@ Role Variables
 The variables that can be passed to this role and a brief description about them are as follows. (For all variables, take a look at defaults/main.yml)
 
 ```yaml
-pgbouncer_exporter_version: 2.0.1
-pgbouncer_exporter_host: 127.0.0.1
-pgbouncer_exporter_port: 9127
-pgbouncer_exporter_log_level: INFO
-
-# list of environment variables
-pgbouncer_exporter_env_variables:
-  - PGBOUNCER_PASS=passw0rd!
-
-# pgbouncer supports environment variables replacement
-# Ie. $(PGBOUNCER_PASS) is replaced with the content of "PGBOUNCER_PASS" environment variable
-pgbouncer_exporter_pgbouncers:
-  - dsn: postgresql://pgbouncer:$(PGBOUNCER_PASS)@127.0.0.1:5432/pgbouncer
-    connect_timeout: 5
-    include_databases: []
-    exclude_databases:
-      - pgbouncer
+pgbouncer_listen_addr: 127.0.0.1
+pgbouncer_listen_port: 6432
 ```
 
 Dependencies
