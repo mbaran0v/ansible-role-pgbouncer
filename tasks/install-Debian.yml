@@ -1,0 +1,24 @@
+---
+
+- name: Make sure the CA certificates are available
+  apt:
+    pkg: ca-certificates
+    state: present
+
+- name: Add PostgreSQL repository apt-key
+  apt_key:
+    id: "{{ pgbouncer_apt_key_id }}"
+    url: "{{ pgbouncer_apt_key_url }}"
+    state: present
+  when: pgbouncer_install_repository|bool
+
+- name: Add PostgreSQL repository
+  apt_repository:
+    repo: "{{ pgbouncer_apt_repository }}"
+    state: present
+  when: pgbouncer_install_repository|bool
+
+- name: Install PgBouncer
+  apt:
+    pkg: pgbouncer
+    state: present

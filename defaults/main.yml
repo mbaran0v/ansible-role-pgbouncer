@@ -1,0 +1,108 @@
+---
+
+pgbouncer_install_repository: yes
+
+pgbouncer_logrotate_conf_dir: /etc/logrotate.d
+
+# Apt settings
+pgbouncer_apt_key_id: "ACCC4CF8"
+pgbouncer_apt_key_url: "https://www.postgresql.org/media/keys/ACCC4CF8.asc"
+pgbouncer_apt_repository: "deb http://apt.postgresql.org/pub/repos/apt/ {{ ansible_distribution_release }}-pgdg main"
+
+# Yum settings
+pgbouncer_yum_repository_url: "https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}/pgdg-redhat-repo-latest.noarch.rpm"
+
+# main settings
+pgbouncer_cfg_dir: /etc/pgbouncer
+pgbouncer_log_dir: /var/log/pgbouncer
+
+pgbouncer_listen_addr: 127.0.0.1
+pgbouncer_listen_port: 6432
+
+pgbouncer_auth_type: trust
+pgbouncer_auth_file: "{{ pgbouncer_cfg_dir }}/userlist.txt"
+pgbouncer_auth_hba_file: "{{ pgbouncer_cfg_dir }}/pgbouncer_hba.conf"
+
+pgbouncer_hba_default:
+  - comment: unix socket connections
+    type: local
+    database: all
+    user: all
+    address: ""
+    method: trust
+  - comment: trust passwordless local IPv4 connections to the stats table
+    type: host
+    database: pgbouncer
+    user: stats
+    address: "127.0.0.1/32"
+    method: trust
+  - comment: local IPv4 connections
+    type: host
+    database: all
+    user: all
+    address: 127.0.0.1/32
+    method: md5
+
+pgbouncer_hba_custom: []
+
+pgbouncer_databases:
+  - name: "*"
+    host: 127.0.0.1
+    port: 5432
+
+pgbouncer_users: []
+
+pgbouncer_admin_users:
+  - postgres
+pgbouncer_stats_users:
+  - postgres
+  - stats
+
+pgbouncer_pool_mode: session
+pgbouncer_server_reset_query: DISCARD ALL
+pgbouncer_server_reset_query_always: 0
+pgbouncer_ignore_startup_parameters: extra_float_digits,application_name
+pgbouncer_server_check_query: select 1
+pgbouncer_server_check_delay: 30
+pgbouncer_application_name_add_host: 0
+pgbouncer_max_client_conn: 100
+pgbouncer_default_pool_size: 20
+pgbouncer_min_pool_size: 0
+pgbouncer_reserve_pool_size: 0
+pgbouncer_reserve_pool_timeout: 5
+pgbouncer_max_db_connections: 50
+pgbouncer_max_user_connections: 50
+pgbouncer_server_round_robin: 0
+pgbouncer_syslog: 0
+pgbouncer_syslog_facility: daemon
+pgbouncer_syslog_ident: pgbouncer
+pgbouncer_log_connections: 1
+pgbouncer_log_disconnections: 1
+pgbouncer_log_pooler_errors: 1
+pgbouncer_verbose: 0
+pgbouncer_stats_period: 60
+pgbouncer_server_lifetime: 3600
+pgbouncer_server_idle_timeout: 600
+pgbouncer_server_connect_timeout: 15
+pgbouncer_server_login_retry: 15
+pgbouncer_query_timeout: 0
+pgbouncer_query_wait_timeout: 120
+pgbouncer_client_idle_timeout: 0
+pgbouncer_client_login_timeout: 60
+pgbouncer_autodb_idle_timeout: 3600
+pgbouncer_suspend_timeout: 10
+pgbouncer_idle_transaction_timeout: 0
+pgbouncer_pkt_buf: 4096
+pgbouncer_listen_backlog: 128
+pgbouncer_sbuf_loopcnt: 5
+pgbouncer_max_packet_size: 2147483647
+pgbouncer_tcp_defer_accept: 45
+pgbouncer_tcp_socket_buffer: 0
+pgbouncer_tcp_keepalive: 1
+pgbouncer_tcp_keepcnt: 0
+pgbouncer_tcp_keepidle: 0
+pgbouncer_tcp_keepintvl: 0
+pgbouncer_dns_max_ttl: 15
+pgbouncer_dns_zone_check_period: 0
+pgbouncer_dns_nxdomain_ttl: 15
+pgbouncer_disable_pqexec: 0

@@ -1,0 +1,13 @@
+{{ pgbouncer_log_dir }}/*.log {
+    daily
+    rotate 7
+    copytruncate
+    compress
+    delaycompress
+    missingok
+    notifempty
+    nodateext
+    postrotate
+        /bin/kill -HUP `cat {{ __pgbouncer_pid_dir }}/pgbouncer.pid  2>/dev/null` 2> /dev/null || true
+    endscript
+}

@@ -1,0 +1,17 @@
+---
+
+- name: Make sure the CA certificates are available
+  yum:
+    name: ["ca-certificates", "epel-release"]
+    state: present
+
+- name: Add PostgreSQL repository
+  yum:
+    name: "{{ pgbouncer_yum_repository_url }}"
+    state: present
+  when: pgbouncer_install_repository
+
+- name: Install PgBouncer
+  yum:
+    name: pgbouncer
+    state: present

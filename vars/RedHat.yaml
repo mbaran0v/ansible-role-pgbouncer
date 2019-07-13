@@ -1,0 +1,5 @@
+---
+
+__pgbouncer_user: pgbouncer
+__pgbouncer_group: pgbouncer
+__pgbouncer_pid_dir: /var/run/pgbouncer

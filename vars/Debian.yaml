@@ -1,0 +1,5 @@
+---
+
+__pgbouncer_user: postgres
+__pgbouncer_group: postgres
+__pgbouncer_pid_dir: /var/run/postgresql
