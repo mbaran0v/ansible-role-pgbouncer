@@ -18,8 +18,15 @@ Role Variables
 The variables that can be passed to this role and a brief description about them are as follows. (For all variables, take a look at defaults/main.yml)
 
 ```yaml
-pgbouncer_listen_addr: 127.0.0.1
+pgbouncer_listen_addr: 0.0.0.0
 pgbouncer_listen_port: 6432
+
+pgbouncer_auth_type: md5
+pgbouncer_auth_file: "{{ pgbouncer_cfg_dir }}/userlist.txt"
+
+pgbouncer_users:
+  - name: worker
+    pass: 123456
 ```
 
 Dependencies
