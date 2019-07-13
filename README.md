@@ -22,8 +22,6 @@ pgbouncer_listen_addr: 0.0.0.0
 pgbouncer_listen_port: 6432
 
 pgbouncer_auth_type: md5
-pgbouncer_auth_file: "{{ pgbouncer_cfg_dir }}/userlist.txt"
-
 pgbouncer_users:
   - name: worker
     pass: 123456
