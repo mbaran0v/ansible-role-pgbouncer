@@ -87,10 +87,10 @@ listen_port = {{ pgbouncer_listen_port }}
 ;;;
 
 ;; disable, allow, require, verify-ca, verify-full
-;server_tls_sslmode = disable
+server_tls_sslmode = {{ pgbouncer_server_tls_sslmode }}
 
 ;; Path to that contains trusted CA certs
-;server_tls_ca_file = <system default>
+server_tls_ca_file = {{ pgbouncer_server_tls_ca_file }}
 
 ;; Private key and cert to present to backend.
 ;; Needed only if backend server require client cert.
@@ -98,7 +98,7 @@ listen_port = {{ pgbouncer_listen_port }}
 ;server_tls_cert_file =
 
 ;; all, secure, tlsv1.0, tlsv1.1, tlsv1.2, tlsv1.3
-;server_tls_protocols = all
+server_tls_protocols = {{ pgbouncer_server_tls_protocols }}
 
 ;; fast, normal, secure, legacy, <ciphersuite string>
 ;server_tls_ciphers = fast
@@ -107,7 +107,7 @@ listen_port = {{ pgbouncer_listen_port }}
 ;;; Authentication settings
 ;;;
 
-; any, trust, plain, crypt, md5, cert, hba, pam
+; any, trust, plain, crypt, md5, cert, hba, pam, scram-sha-256
 auth_type = {{ pgbouncer_auth_type }}
 auth_file = {{ pgbouncer_auth_file }}
 
@@ -116,7 +116,7 @@ auth_hba_file = {{ pgbouncer_auth_hba_file }}
 
 ;; Query to use to fetch password from database.  Result
 ;; must have 2 columns - username and password hash.
-;auth_query = SELECT usename, passwd FROM pg_shadow WHERE usename=$1
+auth_query = {{ pgbouncer_auth_query }}
 
 ;;;
 ;;; Users allowed into database 'pgbouncer'
@@ -177,7 +177,7 @@ server_check_delay = {{ pgbouncer_server_check_delay }}
 
 ; Close servers in session pooling mode after a RECONNECT, RELOAD,
 ; etc. when they are idle instead of at the end of the session.
-;server_fast_close = 0
+server_fast_close = {{ pgbouncer_server_fast_close }}
 
 ;; Use <appname - host> as application_name on server.
 application_name_add_host = {{ pgbouncer_application_name_add_host }}

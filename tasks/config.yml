@@ -28,9 +28,9 @@
     group: "{{ __pgbouncer_group }}"
     mode: 0640
   notify:
-    - reload pgbouncer
+    - restart pgbouncer
 
-- name: add users to userlist.txt
+- name: add users to userlist.txt - trust and md5
   copy:
     dest: "{{ pgbouncer_auth_file }}"
     owner: "{{ __pgbouncer_user }}"
@@ -41,8 +41,27 @@
       {% for user in pgbouncer_users %}
       "{{ user.name }}" "md5{{ (user.pass + user.name) | hash('md5') }}"
       {% endfor %}
+  when:
+    - pgbouncer_auth_type == 'trust'
+    - pgbouncer_auth_type == 'md5'
   notify:
-    - reload pgbouncer
+    - testart pgbouncer
+
+- name: add users to userlist.txt - scram-sha-256
+  copy:
+    dest: "{{ pgbouncer_auth_file }}"
+    owner: "{{ __pgbouncer_user }}"
+    group: "{{ __pgbouncer_group }}"
+    mode: 0640
+    content: |
+      "stats" "passwordless"
+      {% for user in pgbouncer_users %}
+      "{{ user.name }}" "{{ user.pass }}"
+      {% endfor %}
+  when:
+    - pgbouncer_auth_type == 'scram-sha-256'
+  notify:
+    - restart pgbouncer
 
 - name: create hba file
   template:
@@ -52,4 +71,4 @@
     group: "{{ __pgbouncer_group }}"
     mode: 0640
   notify:
-    - reload pgbouncer
+    - restart pgbouncer

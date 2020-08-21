@@ -106,3 +106,8 @@ pgbouncer_dns_max_ttl: 15
 pgbouncer_dns_zone_check_period: 0
 pgbouncer_dns_nxdomain_ttl: 15
 pgbouncer_disable_pqexec: 0
+pgbouncer_server_tls_sslmode: disable
+pgbouncer_server_tls_ca_file: '<system default>'
+pgbouncer_server_tls_protocols: all
+pgbouncer_auth_query: 'SELECT usename, passwd FROM pg_shadow WHERE usename=$1'
+pgbouncer_server_fast_close: 0
