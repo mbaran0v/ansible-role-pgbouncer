@@ -56,7 +56,7 @@
     content: |
       "stats" "passwordless"
       {% for user in pgbouncer_users %}
-      "{{ user.name }}" "md5{{ (user.pass + user.name) | hash('md5') }}"
+      "{{ user.name }}" "{{ user.pass }}"
       {% endfor %}
   when:
     - pgbouncer_auth_type == 'scram-sha-256'
